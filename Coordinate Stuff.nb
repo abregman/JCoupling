@@ -1,0 +1,1181 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     47793,       1172]
+NotebookOptionsPosition[     46935,       1143]
+NotebookOutlinePosition[     47313,       1159]
+CellTagsIndexPosition[     47270,       1156]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["\<\
+These are translation functions to move around a single molecule, given the \
+coordinate(.xyz) file for the dimer, How far you want to translate in \
+Angstroms, and the names for the file with the new dimer(newfilename) and the \
+isolated molecule(isofilename). Make sure that you know the coordinate system \
+you are working in, the directions that I have defined as X,Y, and Z might \
+not be the same.
+The Batch Functions for each direction  allow for the creation of coordinate \
+files over a range of distances. For positive translations use a positive \
+increment. For Negative translations use a negtive increment. Starting and \
+Ending R is always positive.
+The Rotation functions use the Redefine center function to move the molecule \
+so that rotations occur around the center of the molecule. Rotations are \
+counter-clockwise give an angle in radians(\[Theta]) and the name of the \
+coordinate file and the new coordinate file(.xyz)\
+\>", "Subsubsection",
+ CellChangeTimes->{{3.6076260267311854`*^9, 3.607626188465436*^9}, {
+  3.6076290679915485`*^9, 3.6076292118997793`*^9}, {3.6076293048250947`*^9, 
+  3.607629380724436*^9}}],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{"Translation", " ", "Functions"}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"TranslateX", "[", 
+      RowBox[{
+      "filename_", ",", "R_", ",", "newfilename_", ",", "isofilename_"}], 
+      "]"}], ":=", "\[IndentingNewLine]", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+        "coords", ",", "types", ",", "length", ",", "newcoords", ",", 
+         "isocoords", ",", "isotypes"}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"coords", " ", "=", " ", 
+         RowBox[{
+          RowBox[{"Import", "[", 
+           RowBox[{"filename", ",", "\"\<VertexCoordinates\>\""}], "]"}], "/",
+           "100"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"types", " ", "=", " ", 
+         RowBox[{"Import", "[", 
+          RowBox[{"filename", ",", "\"\<VertexTypes\>\""}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"length", " ", "=", 
+         RowBox[{"Length", "[", "coords", "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"Do", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"coords", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "[", 
+            RowBox[{"[", "1", "]"}], "]"}], "=", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"coords", "[", 
+              RowBox[{"[", "i", "]"}], "]"}], "[", 
+             RowBox[{"[", "1", "]"}], "]"}], "+", "R"}]}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", 
+            RowBox[{
+             FractionBox["length", "2"], "+", "1"}], ",", "length"}], "}"}]}],
+          "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"newcoords", "=", 
+         RowBox[{"coords", "*", "100"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"isocoords", "=", 
+         RowBox[{"newcoords", "[", 
+          RowBox[{"[", 
+           RowBox[{
+            RowBox[{
+             FractionBox["length", "2"], "+", "1"}], ";;", "length"}], "]"}], 
+          "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"isotypes", "=", 
+         RowBox[{"types", "[", 
+          RowBox[{"[", 
+           RowBox[{
+            RowBox[{
+             FractionBox["length", "2"], "+", "1"}], ";;", "length"}], "]"}], 
+          "]"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"Export", "[", 
+         RowBox[{"newfilename", ",", 
+          RowBox[{"{", 
+           RowBox[{"types", ",", "newcoords"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"{", 
+            RowBox[{"\"\<VertexTypes\>\"", ",", "\"\<VertexCoordinates\>\""}],
+             "}"}], "}"}]}], "]"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"Export", "[", 
+         RowBox[{"isofilename", ",", 
+          RowBox[{"{", 
+           RowBox[{"isotypes", ",", "isocoords"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"{", 
+            RowBox[{"\"\<VertexTypes\>\"", ",", "\"\<VertexCoordinates\>\""}],
+             "}"}], "}"}]}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], 
+    ";"}], "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.5913946882731285`*^9, 3.5913948138293095`*^9}, {
+   3.591394922559529*^9, 3.591394927083788*^9}, {3.5913950107555733`*^9, 
+   3.5913951339826217`*^9}, {3.5913957259374795`*^9, 
+   3.5913957305727444`*^9}, {3.591395849329537*^9, 3.5913958530927525`*^9}, {
+   3.5913958900768676`*^9, 3.591395891218933*^9}, {3.5913961669247026`*^9, 
+   3.5913962038958173`*^9}, {3.5914404118230658`*^9, 3.591440446411044*^9}, {
+   3.5995167391024923`*^9, 3.5995167477969894`*^9}, {3.600553903382265*^9, 
+   3.600553918719142*^9}, {3.6005542287718763`*^9, 3.6005542290308905`*^9}, {
+   3.600554301134015*^9, 3.600554355039098*^9}, {3.6005544077211113`*^9, 
+   3.6005544083501472`*^9}, {3.600556231611432*^9, 3.6005562398819046`*^9}, {
+   3.602278022897421*^9, 3.602278141023177*^9}, 3.6076260217318993`*^9, {
+   3.607626133059267*^9, 3.6076261403946867`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"TransXBatch", "[", 
+     RowBox[{
+     "filename_", ",", "new_", ",", "startR_", ",", "endR_", ",", 
+      "Increment_"}], "]"}], ":=", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "coords", ",", "types", ",", "length", ",", "newcoords", ",", 
+        "isocoords", ",", "isotypes", ",", "NumFiles", ",", "version", ",", 
+        "ext", ",", "r", ",", "newfilename", ",", "isofilename"}], "}"}], ",",
+       "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"coords", " ", "=", " ", 
+         RowBox[{
+          RowBox[{"Import", "[", 
+           RowBox[{"filename", ",", "\"\<VertexCoordinates\>\""}], "]"}], "/",
+           "100"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"types", " ", "=", " ", 
+         RowBox[{"Import", "[", 
+          RowBox[{"filename", ",", "\"\<VertexTypes\>\""}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"length", " ", "=", " ", 
+         RowBox[{"Length", "[", "coords", "]"}]}], ";"}], "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"NumFiles", "=", 
+        FractionBox[
+         RowBox[{"(", 
+          RowBox[{"endR", "-", "startR"}], ")"}], "Increment"]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+         "NEW", " ", "FILENAME", " ", "IS", " ", "DIRECTORY", " ", "UP", " ", 
+          "TO", " ", "MOLECULE", " ", "NAME", " ", "NOT", " ", "INCLUDING", 
+          " ", "NUMBER", " ", "OR", " ", "EXTENSION"}], "*)"}], 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"r", "=", 
+           RowBox[{"startR", "+", 
+            RowBox[{"(", 
+             RowBox[{"Increment", "*", 
+              RowBox[{"(", "i", ")"}]}], ")"}]}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"ext", " ", "=", " ", "\"\<.xyz\>\""}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"version", " ", "=", " ", 
+           RowBox[{"ToString", "[", "i", "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"newfilename", " ", "=", 
+           RowBox[{"new", "<>", "version", "<>", "ext"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"isofilename", "=", 
+           RowBox[{
+           "new", "<>", "version", "<>", "\"\<iso\>\"", "<>", "ext"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"TranslateX", "[", 
+           RowBox[{
+           "filename", ",", "r", ",", "newfilename", ",", "isofilename"}], 
+           "]"}], ";"}], "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "0", ",", 
+           RowBox[{"Abs", "[", "NumFiles", "]"}]}], "}"}]}], 
+        "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}],
+    ";"}], "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.602937761671155*^9, 3.6029378572326207`*^9}, {
+  3.602937898144961*^9, 3.6029380110094166`*^9}, {3.602938046578451*^9, 
+  3.602938138718721*^9}, {3.6029381700845146`*^9, 3.6029383201350975`*^9}, {
+  3.6029384106062717`*^9, 3.6029384158175697`*^9}, {3.6029385395186453`*^9, 
+  3.6029385397776604`*^9}, {3.6035434666420364`*^9, 3.603543470165238*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"TranslateY", "[", 
+    RowBox[{
+    "filename_", ",", "R_", ",", "newfilename_", ",", "isofilename_"}], "]"}],
+    ":=", "\[IndentingNewLine]", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "coords", ",", "types", ",", "length", ",", "newcoords", ",", 
+       "isotypes", ",", "isocoords"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"coords", " ", "=", " ", 
+       RowBox[{
+        RowBox[{"Import", "[", 
+         RowBox[{"filename", ",", "\"\<VertexCoordinates\>\""}], "]"}], "/", 
+        "100"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"types", " ", "=", " ", 
+       RowBox[{"Import", "[", 
+        RowBox[{"filename", ",", "\"\<VertexTypes\>\""}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"length", " ", "=", 
+       RowBox[{"Length", "[", "coords", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Do", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{"coords", "[", 
+           RowBox[{"[", "i", "]"}], "]"}], "[", 
+          RowBox[{"[", "2", "]"}], "]"}], "=", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"coords", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], "[", 
+           RowBox[{"[", "2", "]"}], "]"}], "+", "R"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", 
+          RowBox[{
+           FractionBox["length", "2"], "+", "1"}], ",", "length"}], "}"}]}], 
+       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"newcoords", "=", 
+       RowBox[{"coords", "*", "100"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"isocoords", "=", 
+       RowBox[{"newcoords", "[", 
+        RowBox[{"[", 
+         RowBox[{
+          RowBox[{
+           FractionBox["length", "2"], "+", "1"}], ";;", "length"}], "]"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"isotypes", "=", 
+       RowBox[{"types", "[", 
+        RowBox[{"[", 
+         RowBox[{
+          RowBox[{
+           FractionBox["length", "2"], "+", "1"}], ";;", "length"}], "]"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"Export", "[", 
+       RowBox[{"newfilename", ",", 
+        RowBox[{"{", 
+         RowBox[{"types", ",", "newcoords"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"{", 
+          RowBox[{"\"\<VertexTypes\>\"", ",", "\"\<VertexCoordinates\>\""}], 
+          "}"}], "}"}]}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Export", "[", 
+       RowBox[{"isofilename", ",", 
+        RowBox[{"{", 
+         RowBox[{"isotypes", ",", "isocoords"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"{", 
+          RowBox[{"\"\<VertexTypes\>\"", ",", "\"\<VertexCoordinates\>\""}], 
+          "}"}], "}"}]}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.5913957155258837`*^9, 3.591395745516599*^9}, {
+  3.591395868875655*^9, 3.5913958771701293`*^9}, {3.5914404507042894`*^9, 
+  3.591440450872299*^9}, {3.59144050560843*^9, 3.591440505912447*^9}, {
+  3.5995167217384987`*^9, 3.5995167506111503`*^9}, {3.6005545672832375`*^9, 
+  3.6005545897775245`*^9}, {3.6022768479912195`*^9, 3.602276931358988*^9}, {
+  3.6029386022202315`*^9, 3.6029386027922645`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"TransYBatch", "[", 
+     RowBox[{
+     "filename_", ",", "new_", ",", "startR_", ",", "endR_", ",", 
+      "Increment_"}], "]"}], ":=", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "coords", ",", "types", ",", "length", ",", "newcoords", ",", 
+        "isocoords", ",", "isotypes", ",", "NumFiles", ",", "version", ",", 
+        "ext", ",", "r", ",", "newfilename", ",", "isofilename"}], "}"}], ",",
+       "\[IndentingNewLine]", 
+      RowBox[{"(*", 
+       RowBox[{
+        RowBox[{"coords", " ", "=", " ", 
+         RowBox[{
+          RowBox[{"Import", "[", 
+           RowBox[{"filename", ",", "\"\<VertexCoordinates\>\""}], "]"}], "/",
+           "100"}]}], ";", "\[IndentingNewLine]", 
+        RowBox[{"types", " ", "=", " ", 
+         RowBox[{"Import", "[", 
+          RowBox[{"filename", ",", "\"\<VertexTypes\>\""}], "]"}]}], ";", 
+        "\[IndentingNewLine]", 
+        RowBox[{"length", " ", "=", " ", 
+         RowBox[{"Length", "[", "coords", "]"}]}], ";"}], "*)"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"NumFiles", "=", 
+        FractionBox[
+         RowBox[{"(", 
+          RowBox[{"endR", "-", "startR"}], ")"}], "Increment"]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{"(*", 
+         RowBox[{
+         "NEW", " ", "FILENAME", " ", "IS", " ", "DIRECTORY", " ", "UP", " ", 
+          "TO", " ", "MOLECULE", " ", "NAME", " ", "NOT", " ", "INCLUDING", 
+          " ", "NUMBER", " ", "OR", " ", "EXTENSION"}], "*)"}], 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"r", "=", 
+           RowBox[{"startR", "+", 
+            RowBox[{"(", 
+             RowBox[{"Increment", "*", 
+              RowBox[{"(", "i", ")"}]}], ")"}]}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"ext", " ", "=", " ", "\"\<.xyz\>\""}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"version", " ", "=", " ", 
+           RowBox[{"ToString", "[", "i", "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"newfilename", " ", "=", 
+           RowBox[{"new", "<>", "version", "<>", "ext"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"isofilename", "=", 
+           RowBox[{
+           "new", "<>", "version", "<>", "\"\<iso\>\"", "<>", "ext"}]}], ";", 
+          "\[IndentingNewLine]", 
+          RowBox[{"TranslateY", "[", 
+           RowBox[{
+           "filename", ",", "r", ",", "newfilename", ",", "isofilename"}], 
+           "]"}], ";"}], "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "0", ",", 
+           RowBox[{"Abs", "[", "NumFiles", "]"}]}], "}"}]}], 
+        "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}],
+    ";"}], "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.602938664535796*^9, 3.6029386669209323`*^9}, {
+  3.6029406996972003`*^9, 3.6029407036634274`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"TranslateZ", "[", 
+    RowBox[{
+    "filename_", ",", "R_", ",", "newfilename_", ",", "isofilename_"}], "]"}],
+    ":=", "\[IndentingNewLine]", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "coords", ",", "types", ",", "length", ",", "newcoords", ",", 
+       "isocoords", ",", "isotypes"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"coords", " ", "=", " ", 
+       RowBox[{
+        RowBox[{"Import", "[", 
+         RowBox[{"filename", ",", "\"\<VertexCoordinates\>\""}], "]"}], "/", 
+        "100"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"types", " ", "=", " ", 
+       RowBox[{"Import", "[", 
+        RowBox[{"filename", ",", "\"\<VertexTypes\>\""}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"length", " ", "=", 
+       RowBox[{"Length", "[", "coords", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Do", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{"coords", "[", 
+           RowBox[{"[", "i", "]"}], "]"}], "[", 
+          RowBox[{"[", "3", "]"}], "]"}], "=", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"coords", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], "[", 
+           RowBox[{"[", "3", "]"}], "]"}], "+", "R"}]}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", 
+          RowBox[{
+           FractionBox["length", "2"], "+", "1"}], ",", "length"}], "}"}]}], 
+       "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"newcoords", "=", 
+       RowBox[{"coords", "*", "100"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"isocoords", "=", 
+       RowBox[{"newcoords", "[", 
+        RowBox[{"[", 
+         RowBox[{
+          RowBox[{
+           FractionBox["length", "2"], "+", "1"}], ";;", "length"}], "]"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"isotypes", "=", 
+       RowBox[{"types", "[", 
+        RowBox[{"[", 
+         RowBox[{
+          RowBox[{
+           FractionBox["length", "2"], "+", "1"}], ";;", "length"}], "]"}], 
+        "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Export", "[", 
+       RowBox[{"newfilename", ",", 
+        RowBox[{"{", 
+         RowBox[{"types", ",", "newcoords"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"{", 
+          RowBox[{"\"\<VertexTypes\>\"", ",", "\"\<VertexCoordinates\>\""}], 
+          "}"}], "}"}]}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"Export", "[", 
+       RowBox[{"isofilename", ",", 
+        RowBox[{"{", 
+         RowBox[{"isotypes", ",", "isocoords"}], "}"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"{", 
+          RowBox[{"\"\<VertexTypes\>\"", ",", "\"\<VertexCoordinates\>\""}], 
+          "}"}], "}"}]}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.591395752143978*^9, 3.591395768348905*^9}, {
+   3.591395871446802*^9, 3.5913958848305674`*^9}, {3.5914404848612432`*^9, 
+   3.5914404851822615`*^9}, {3.591440522381389*^9, 3.591440522541398*^9}, {
+   3.5995167104048505`*^9, 3.599516717247242*^9}, 3.599516755101407*^9, {
+   3.6005563724944897`*^9, 3.6005563748496246`*^9}, {3.600556431187847*^9, 
+   3.6005564317218776`*^9}, {3.600556511418436*^9, 3.6005565116824512`*^9}, {
+   3.6029386197192326`*^9, 3.6029386468577847`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"TransZBatch", "[", 
+    RowBox[{
+    "filename_", ",", "new_", ",", "startR_", ",", "endR_", ",", 
+     "Increment_"}], "]"}], ":=", "\[IndentingNewLine]", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "coords", ",", "types", ",", "length", ",", "newcoords", ",", 
+       "isocoords", ",", "isotypes", ",", "NumFiles", ",", "version", ",", 
+       "ext", ",", "r", ",", "newfilename", ",", "isofilename"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{"(*", 
+      RowBox[{
+       RowBox[{"coords", " ", "=", " ", 
+        RowBox[{
+         RowBox[{"Import", "[", 
+          RowBox[{"filename", ",", "\"\<VertexCoordinates\>\""}], "]"}], "/", 
+         "100"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"types", " ", "=", " ", 
+        RowBox[{"Import", "[", 
+         RowBox[{"filename", ",", "\"\<VertexTypes\>\""}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"length", " ", "=", " ", 
+        RowBox[{"Length", "[", "coords", "]"}]}], ";"}], "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"NumFiles", "=", 
+       FractionBox[
+        RowBox[{"(", 
+         RowBox[{"endR", "-", "startR"}], ")"}], "Increment"]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Do", "[", "\[IndentingNewLine]", 
+       RowBox[{"(*", 
+        RowBox[{
+        "NEW", " ", "FILENAME", " ", "IS", " ", "DIRECTORY", " ", "UP", " ", 
+         "TO", " ", "MOLECULE", " ", "NAME", " ", "NOT", " ", "INCLUDING", 
+         " ", "NUMBER", " ", "OR", " ", "EXTENSION"}], "*)"}], 
+       "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"r", "=", 
+          RowBox[{"startR", "+", 
+           RowBox[{"(", 
+            RowBox[{"Increment", "*", 
+             RowBox[{"(", "i", ")"}]}], ")"}]}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"ext", " ", "=", " ", "\"\<.xyz\>\""}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"version", " ", "=", " ", 
+          RowBox[{"ToString", "[", "i", "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"newfilename", " ", "=", 
+          RowBox[{"new", "<>", "version", "<>", "ext"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"isofilename", "=", 
+          RowBox[{
+          "new", "<>", "version", "<>", "\"\<iso\>\"", "<>", "ext"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"TranslateZ", "[", 
+          RowBox[{
+          "filename", ",", "r", ",", "newfilename", ",", "isofilename"}], 
+          "]"}], ";"}], "\[IndentingNewLine]", ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", "0", ",", 
+          RowBox[{"Abs", "[", "NumFiles", "]"}]}], "}"}]}], 
+       "\[IndentingNewLine]", "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.602938687420105*^9, 3.602938691743352*^9}, {
+  3.602969085497252*^9, 3.602969088878445*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Rotations", " ", "Keeping", " ", "X", 
+    RowBox[{"(", 
+     RowBox[{"Z", "-", "axis"}], ")"}], " ", "Constant"}], ",", " ", 
+   RowBox[{"Counter", "-", 
+    RowBox[{"Clockwise", " ", 
+     RowBox[{"i", ".", "e", ".", " ", "spinning"}]}]}]}], "*)"}]], "Input",
+ CellChangeTimes->{{3.5914393159343843`*^9, 3.5914393233488083`*^9}, {
+  3.591439456212408*^9, 3.591439460222637*^9}, {3.5914400078529596`*^9, 
+  3.591440009333044*^9}, {3.591440106659611*^9, 3.5914401074966593`*^9}, {
+  3.5914405942504997`*^9, 3.591440597015658*^9}, {3.5914406782553043`*^9, 
+  3.591440679617382*^9}, {3.591440824779685*^9, 3.591440829033929*^9}, {
+  3.591440917137968*^9, 3.591440918854066*^9}, {3.591441218730218*^9, 
+  3.591441223231476*^9}, {3.5914413091303883`*^9, 3.5914413166578193`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"Rx", "[", 
+     RowBox[{"filename_", ",", "\[Theta]_", ",", "newfilename_"}], "]"}], ":=",
+     "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "Rmatr", ",", "coords", ",", "newcoords", ",", "length", ",", "types", 
+        ",", "Center"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"coords", "=", 
+        RowBox[{
+         RowBox[{"Import", "[", 
+          RowBox[{"filename", ",", "\"\<VertexCoordinates\>\""}], "]"}], "/", 
+         "100"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"types", "=", 
+        RowBox[{"Import", "[", 
+         RowBox[{"filename", ",", "\"\<VertexTypes\>\""}], "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"length", "=", 
+        RowBox[{"Length", "[", "coords", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"newcoords", "=", 
+        RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Center", "=", 
+        RowBox[{"RedefineCenter", "[", 
+         RowBox[{"coords", "[", 
+          RowBox[{"[", 
+           RowBox[{"1", ";;", 
+            FractionBox[
+             RowBox[{"Length", "[", "coords", "]"}], "2"]}], "]"}], "]"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"coords", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "[", 
+            RowBox[{"[", "3", "]"}], "]"}], "=", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"coords", "[", 
+               RowBox[{"[", "i", "]"}], "]"}], "[", 
+              RowBox[{"[", "3", "]"}], "]"}], "-", 
+             RowBox[{"Center", "[", 
+              RowBox[{"[", "3", "]"}], "]"}]}], ")"}]}], ";"}], 
+         "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", "length"}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"coords", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "[", 
+            RowBox[{"[", "2", "]"}], "]"}], "=", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"coords", "[", 
+               RowBox[{"[", "i", "]"}], "]"}], "[", 
+              RowBox[{"[", "2", "]"}], "]"}], "-", 
+             RowBox[{"Center", "[", 
+              RowBox[{"[", "2", "]"}], "]"}]}], ")"}]}], ";"}], 
+         "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", "length"}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"coords", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "[", 
+            RowBox[{"[", "1", "]"}], "]"}], "=", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"coords", "[", 
+               RowBox[{"[", "i", "]"}], "]"}], "[", 
+              RowBox[{"[", "1", "]"}], "]"}], "-", 
+             RowBox[{"Center", "[", 
+              RowBox[{"[", "1", "]"}], "]"}]}], ")"}]}], ";"}], 
+         "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", "length"}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Rmatr", " ", "=", " ", 
+        RowBox[{"(", GridBox[{
+           {"1", "0", "0"},
+           {"0", 
+            RowBox[{"Cos", "[", "\[Theta]", "]"}], 
+            RowBox[{"-", 
+             RowBox[{"Sin", "[", "\[Theta]", "]"}]}]},
+           {"0", 
+            RowBox[{"Sin", "[", "\[Theta]", "]"}], 
+            RowBox[{"Cos", "[", "\[Theta]", "]"}]}
+          }], ")"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"newcoords", "=", 
+           RowBox[{"Append", "[", 
+            RowBox[{"newcoords", ",", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"coords", "[", 
+                 RowBox[{"[", "i", "]"}], "]"}], ".", "Rmatr"}], ")"}], "*", 
+              "100"}]}], "]"}]}], ";"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", 
+           FractionBox["length", "2"]}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"newcoords", "=", 
+           RowBox[{"Append", "[", 
+            RowBox[{"newcoords", ",", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"coords", "[", 
+                RowBox[{"[", "i", "]"}], "]"}], ")"}], "*", "100"}]}], 
+            "]"}]}], ";"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", 
+           RowBox[{
+            FractionBox["length", "2"], "+", "1"}], ",", "length"}], "}"}]}], 
+        "\[IndentingNewLine]", "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Export", "[", 
+        RowBox[{"newfilename", ",", 
+         RowBox[{"{", 
+          RowBox[{"types", ",", "newcoords"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"{", 
+           RowBox[{"\"\<VertexTypes\>\"", ",", "\"\<VertexCoordinates\>\""}], 
+           "}"}], "}"}]}], "]"}], ";"}]}], "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->CompressedData["
+1:eJwdxU0oA2AABuDlJnOdmRn7oSY7sIOWA1tL1tLkZNKaxRwW2paJaW1lyWpj
+0YaGlsM2rSSHtZLC/KQUtrE4rZbWliMHlvne7/D08A1zI1M1DAaDQ+AhnvOt
+7rIkj1uURZz5O04xye059TXW+MWNfPL5npT+oxpowxyhiu59/WwQkB09k2x8
+o1GMCZ/IQYELn1a3djBP8hXChbT0EC+2mugJbj6CN6YlUVwaFf3iI1eYXmFc
+1IvIASuXjVnZffsquX+i14mz6z43VjQH6FqZ1oPvvTkfnu9OBPC2UXyAnZsL
+6jWymF2gD4qHjThf7rBhR9K8i79vl+iduXKTh/xsNfDxuF/2GCbHMif0sxn7
+Oy5euencarErQp79SMrxioRjxsqwgW6xFZcxU1/rwHc6fRCndC8h/GCqROPp
+kryljxXD/3MA5II=
+  "]],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.5993101130670414`*^9, 3.599310127947892*^9}, {
+   3.599310511900853*^9, 3.599310542570607*^9}, {3.5993106312546797`*^9, 
+   3.5993106365159807`*^9}, {3.5995146329240255`*^9, 
+   3.5995146799157133`*^9}, {3.599514886636537*^9, 3.5995148887166557`*^9}, {
+   3.5995184745997567`*^9, 3.5995184928297997`*^9}, {3.599518646746603*^9, 
+   3.599518661137426*^9}, {3.599518878608865*^9, 3.599518886954342*^9}, {
+   3.5995189205342627`*^9, 3.599518953165129*^9}, {3.599518983648873*^9, 
+   3.5995190036110144`*^9}, {3.599519050233681*^9, 3.599519137867694*^9}, {
+   3.59951999432368*^9, 3.599519996358796*^9}, {3.599580445725216*^9, 
+   3.599580451965573*^9}, {3.5995808507753835`*^9, 3.599580877557915*^9}, {
+   3.599580934202155*^9, 3.599581028820567*^9}, {3.600122930885502*^9, 
+   3.60012294886053*^9}, {3.6006391316173058`*^9, 3.6006391753298063`*^9}, {
+   3.600639258750578*^9, 3.6006393943773346`*^9}, {3.600640123131017*^9, 
+   3.600640130487438*^9}, {3.600640251522361*^9, 3.600640254259517*^9}, {
+   3.600640345377729*^9, 3.600640438688066*^9}, {3.601585450589625*^9, 
+   3.601585516334385*^9}, {3.6016774183644977`*^9, 3.601677482602172*^9}, {
+   3.6016783796434793`*^9, 3.6016784571869144`*^9}, {3.6016841385028677`*^9, 
+   3.60168423593244*^9}, {3.6016842798569527`*^9, 3.601684345000678*^9}, {
+   3.6016844176588345`*^9, 3.6016844441523495`*^9}, {3.6016845031467237`*^9, 
+   3.601684520225701*^9}, {3.601822297385786*^9, 3.6018223155048227`*^9}, {
+   3.601822346305584*^9, 3.6018223997606416`*^9}, {3.601822447401366*^9, 
+   3.601822472850822*^9}, {3.6022566076803007`*^9, 3.6022566587842236`*^9}, {
+   3.6022611815149093`*^9, 3.602261185582142*^9}, 3.6022613484904594`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"RedefineCenter", "[", "coords_", "]"}], ":=", 
+    "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"CenterX", ",", "CenterY", ",", "CenterZ", ",", "Centers"}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"CenterX", "=", "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"CenterY", "=", "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"CenterZ", "=", "0"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"CenterX", "=", 
+          RowBox[{"CenterX", "+", 
+           RowBox[{
+            RowBox[{"coords", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "[", 
+            RowBox[{"[", "1", "]"}], "]"}]}]}], "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", 
+           RowBox[{"Length", "[", "coords", "]"}]}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"CenterY", "=", 
+          RowBox[{"CenterY", "+", 
+           RowBox[{
+            RowBox[{"coords", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "[", 
+            RowBox[{"[", "2", "]"}], "]"}]}]}], "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", 
+           RowBox[{"Length", "[", "coords", "]"}]}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"CenterZ", "=", 
+          RowBox[{"CenterZ", "+", 
+           RowBox[{
+            RowBox[{"coords", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "[", 
+            RowBox[{"[", "3", "]"}], "]"}]}]}], "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", 
+           RowBox[{"Length", "[", "coords", "]"}]}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"CenterX", "=", 
+        FractionBox["CenterX", 
+         RowBox[{"Length", "[", "coords", "]"}]]}], ";", 
+       RowBox[{"CenterY", "=", 
+        FractionBox["CenterY", 
+         RowBox[{"Length", "[", "coords", "]"}]]}], ";", 
+       RowBox[{"CenterZ", "=", 
+        FractionBox["CenterZ", 
+         RowBox[{"Length", "[", "coords", "]"}]]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Centers", "=", 
+        RowBox[{"{", 
+         RowBox[{"CenterX", ",", "CenterY", ",", "CenterZ"}], "}"}]}]}]}], 
+     "\[IndentingNewLine]", "]"}]}], ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.5995686093944626`*^9, 3.599568658515272*^9}, {
+   3.59956870533095*^9, 3.5995688639490223`*^9}, {3.5995689468517637`*^9, 
+   3.5995689776715264`*^9}, 3.5995692247466583`*^9, 3.5995788761844435`*^9, {
+   3.59957898941792*^9, 3.5995790060198693`*^9}, {3.5995790920617905`*^9, 
+   3.599579163680887*^9}}],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{"Rotations", " ", "keeping", " ", "Y", 
+    RowBox[{"(", 
+     RowBox[{"X", "-", "axis"}], ")"}], " ", "constant"}], ",", 
+   RowBox[{"Counter", " ", "Clockwise", " ", 
+    RowBox[{"i", ".", "e", ".", " ", "up"}], " ", "and", " ", "down", " ", 
+    "tilts"}]}], "*)"}]], "Input",
+ CellChangeTimes->{{3.591439307399896*^9, 3.5914393127252007`*^9}, {
+  3.5914394622797546`*^9, 3.5914394667590113`*^9}, {3.5914405583004436`*^9, 
+  3.591440561423622*^9}, {3.5914413001118727`*^9, 3.591441304942149*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"Ry", "[", 
+     RowBox[{"filename_", ",", "\[Theta]_", ",", "newfilename_"}], "]"}], ":=",
+     "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "Rmatr", ",", "coords", ",", "newcoords", ",", "length", ",", "types", 
+        ",", "Center"}], "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"coords", "=", 
+        RowBox[{
+         RowBox[{"Import", "[", 
+          RowBox[{"filename", ",", "\"\<VertexCoordinates\>\""}], "]"}], "/", 
+         "100"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"types", "=", 
+        RowBox[{"Import", "[", 
+         RowBox[{"filename", ",", "\"\<VertexTypes\>\""}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"length", "=", 
+        RowBox[{"Length", "[", "coords", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"newcoords", "=", 
+        RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Center", "=", 
+        RowBox[{"RedefineCenter", "[", 
+         RowBox[{"coords", "[", 
+          RowBox[{"[", 
+           RowBox[{"1", ";;", 
+            FractionBox[
+             RowBox[{"Length", "[", "coords", "]"}], "2"]}], "]"}], "]"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"coords", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "[", 
+            RowBox[{"[", "3", "]"}], "]"}], "=", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"coords", "[", 
+               RowBox[{"[", "i", "]"}], "]"}], "[", 
+              RowBox[{"[", "3", "]"}], "]"}], "-", 
+             RowBox[{"Center", "[", 
+              RowBox[{"[", "3", "]"}], "]"}]}], ")"}]}], ";"}], 
+         "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", "length"}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"coords", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "[", 
+            RowBox[{"[", "2", "]"}], "]"}], "=", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"coords", "[", 
+               RowBox[{"[", "i", "]"}], "]"}], "[", 
+              RowBox[{"[", "2", "]"}], "]"}], "-", 
+             RowBox[{"Center", "[", 
+              RowBox[{"[", "2", "]"}], "]"}]}], ")"}]}], ";"}], 
+         "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", "length"}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"coords", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "[", 
+            RowBox[{"[", "1", "]"}], "]"}], "=", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"coords", "[", 
+               RowBox[{"[", "i", "]"}], "]"}], "[", 
+              RowBox[{"[", "1", "]"}], "]"}], "-", 
+             RowBox[{"Center", "[", 
+              RowBox[{"[", "1", "]"}], "]"}]}], ")"}]}], ";"}], 
+         "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", "length"}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Rmatr", " ", "=", " ", 
+        RowBox[{"(", GridBox[{
+           {
+            RowBox[{"Cos", "[", "\[Theta]", "]"}], "0", 
+            RowBox[{"Sin", "[", "\[Theta]", "]"}]},
+           {"0", "1", "0"},
+           {
+            RowBox[{"-", 
+             RowBox[{"Sin", "[", "\[Theta]", "]"}]}], "0", 
+            RowBox[{"Cos", "[", "\[Theta]", "]"}]}
+          }], ")"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"newcoords", "=", 
+           RowBox[{"Append", "[", 
+            RowBox[{"newcoords", ",", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"coords", "[", 
+                 RowBox[{"[", "i", "]"}], "]"}], ".", "Rmatr"}], ")"}], "*", 
+              "100"}]}], "]"}]}], ";"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", 
+           FractionBox["length", "2"]}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"newcoords", "=", 
+           RowBox[{"Append", "[", 
+            RowBox[{"newcoords", ",", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"coords", "[", 
+                RowBox[{"[", "i", "]"}], "]"}], ")"}], "*", "100"}]}], 
+            "]"}]}], ";"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", 
+           RowBox[{
+            FractionBox["length", "2"], "+", "1"}], ",", "length"}], "}"}]}], 
+        "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Export", "[", 
+        RowBox[{"newfilename", ",", 
+         RowBox[{"{", 
+          RowBox[{"types", ",", "newcoords"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"{", 
+           RowBox[{"\"\<VertexTypes\>\"", ",", "\"\<VertexCoordinates\>\""}], 
+           "}"}], "}"}]}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], 
+   ";"}], "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.591397191678315*^9, 3.5913972608852735`*^9}, {
+  3.5913989438175316`*^9, 3.591398948124778*^9}, {3.591440583198868*^9, 
+  3.591440583501885*^9}, {3.5914407926968503`*^9, 3.591440793001868*^9}, {
+  3.599516623188862*^9, 3.599516646419191*^9}, {3.599519455217845*^9, 
+  3.5995194594160852`*^9}, {3.5995198160814853`*^9, 3.599519845556171*^9}, {
+  3.5995801110050707`*^9, 3.599580115994356*^9}, {3.5995810605773835`*^9, 
+  3.5995810892530236`*^9}, {3.5995820775315495`*^9, 3.599582078453603*^9}, {
+  3.599582111170474*^9, 3.599582148844629*^9}}],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Rz", "[", 
+     RowBox[{
+     "filename_", ",", "\[Theta]_", ",", "newfilename_", ",", 
+      "isofilename_"}], "]"}], ":=", "\[IndentingNewLine]", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "Rmatr", ",", "coords", ",", "newcoords", ",", "length", ",", "types", 
+        ",", "Center", ",", "isocoords", ",", "isotypes"}], "}"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"coords", "=", 
+        RowBox[{
+         RowBox[{"Import", "[", 
+          RowBox[{"filename", ",", "\"\<VertexCoordinates\>\""}], "]"}], "/", 
+         "100"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"types", "=", 
+        RowBox[{"Import", "[", 
+         RowBox[{"filename", ",", "\"\<VertexTypes\>\""}], "]"}]}], ";", 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"length", "=", 
+        RowBox[{"Length", "[", "coords", "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"newcoords", "=", 
+        RowBox[{"{", "}"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Center", "=", 
+        RowBox[{"RedefineCenter", "[", 
+         RowBox[{"coords", "[", 
+          RowBox[{"[", 
+           RowBox[{"1", ";;", 
+            FractionBox[
+             RowBox[{"Length", "[", "coords", "]"}], "2"]}], "]"}], "]"}], 
+         "]"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"coords", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "[", 
+            RowBox[{"[", "3", "]"}], "]"}], "=", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"coords", "[", 
+               RowBox[{"[", "i", "]"}], "]"}], "[", 
+              RowBox[{"[", "3", "]"}], "]"}], "-", 
+             RowBox[{"Center", "[", 
+              RowBox[{"[", "3", "]"}], "]"}]}], ")"}]}], ";"}], 
+         "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", "length"}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"coords", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "[", 
+            RowBox[{"[", "2", "]"}], "]"}], "=", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"coords", "[", 
+               RowBox[{"[", "i", "]"}], "]"}], "[", 
+              RowBox[{"[", "2", "]"}], "]"}], "-", 
+             RowBox[{"Center", "[", 
+              RowBox[{"[", "2", "]"}], "]"}]}], ")"}]}], ";"}], 
+         "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", "length"}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"coords", "[", 
+             RowBox[{"[", "i", "]"}], "]"}], "[", 
+            RowBox[{"[", "1", "]"}], "]"}], "=", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"coords", "[", 
+               RowBox[{"[", "i", "]"}], "]"}], "[", 
+              RowBox[{"[", "1", "]"}], "]"}], "-", 
+             RowBox[{"Center", "[", 
+              RowBox[{"[", "1", "]"}], "]"}]}], ")"}]}], ";"}], 
+         "\[IndentingNewLine]", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", "length"}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Rmatr", " ", "=", 
+        RowBox[{"(", GridBox[{
+           {
+            RowBox[{"Cos", "[", "\[Theta]", "]"}], 
+            RowBox[{"-", 
+             RowBox[{"Sin", "[", "\[Theta]", "]"}]}], "0"},
+           {
+            RowBox[{"Sin", "[", "\[Theta]", "]"}], 
+            RowBox[{"Cos", "[", "\[Theta]", "]"}], "0"},
+           {"0", "0", "1"}
+          }], ")"}]}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"newcoords", "=", 
+           RowBox[{"Append", "[", 
+            RowBox[{"newcoords", ",", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"coords", "[", 
+                 RowBox[{"[", "i", "]"}], "]"}], ".", "Rmatr"}], ")"}], "*", 
+              "100"}]}], "]"}]}], ";"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", 
+           FractionBox["length", "2"]}], "}"}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Do", "[", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"newcoords", "=", 
+           RowBox[{"Append", "[", 
+            RowBox[{"newcoords", ",", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"coords", "[", 
+                RowBox[{"[", "i", "]"}], "]"}], ")"}], "*", "100"}]}], 
+            "]"}]}], ";"}], ",", "\[IndentingNewLine]", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", 
+           RowBox[{
+            FractionBox["length", "2"], "+", "1"}], ",", "length"}], "}"}]}], 
+        "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"isotypes", " ", "=", " ", 
+        RowBox[{"types", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ";;", 
+           FractionBox["length", "2"]}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"isocoords", " ", "=", " ", 
+        RowBox[{"newcoords", "[", 
+         RowBox[{"[", 
+          RowBox[{"1", ";;", 
+           FractionBox["length", "2"]}], "]"}], "]"}]}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"Export", "[", 
+        RowBox[{"isofilename", ",", 
+         RowBox[{"{", 
+          RowBox[{"isotypes", ",", "isocoords"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"{", 
+           RowBox[{"\"\<VertexTypes\>\"", ",", "\"\<VertexCoordinates\>\""}], 
+           "}"}], "}"}]}], "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"Export", "[", 
+        RowBox[{"newfilename", ",", 
+         RowBox[{"{", 
+          RowBox[{"types", ",", "newcoords"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"{", 
+           RowBox[{"\"\<VertexTypes\>\"", ",", "\"\<VertexCoordinates\>\""}], 
+           "}"}], "}"}]}], "]"}], ";"}]}], "\[IndentingNewLine]", "]"}]}], 
+   ";"}]}]], "Input",
+ CellChangeTimes->{{3.5913972633064117`*^9, 3.591397360800988*^9}, {
+   3.5913982270985374`*^9, 3.591398229170656*^9}, {3.5914405398903904`*^9, 
+   3.5914405401704063`*^9}, {3.591440809311801*^9, 3.591440809405806*^9}, {
+   3.5995166603989906`*^9, 3.599516678242011*^9}, {3.5997576511351624`*^9, 
+   3.599757666277028*^9}, 3.5997577507038574`*^9, {3.5997577832497187`*^9, 
+   3.5997577841877728`*^9}, {3.6022612299826813`*^9, 3.6022613286943274`*^9}}]
+}, Open  ]]
+},
+WindowSize->{1350, 633},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification->0.8999999761581421,
+FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 1148, 18, 191, "Subsubsection"],
+Cell[1730, 42, 4058, 91, 442, "Input"],
+Cell[5791, 135, 3278, 75, 399, "Input"],
+Cell[9072, 212, 3324, 81, 401, "Input"],
+Cell[12399, 295, 3027, 72, 399, "Input"],
+Cell[15429, 369, 3379, 82, 381, "Input"],
+Cell[18811, 453, 2907, 70, 378, "Input"],
+Cell[21721, 525, 828, 15, 29, "Input"],
+Cell[22552, 542, 6114, 156, 701, "Input"],
+Cell[28669, 700, 1727, 23, 29, "Input"],
+Cell[30399, 725, 2952, 70, 421, "Input"],
+Cell[33354, 797, 551, 11, 29, "Input"],
+Cell[33908, 810, 6121, 154, 634, "Input"],
+Cell[40032, 966, 6887, 174, 741, "Input"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
